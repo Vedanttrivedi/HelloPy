@@ -1,0 +1,31 @@
+trigger:
+- main
+
+pool: Default
+
+steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      az login
+  displayName : Azure Login
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      ids = az webapp list --query '[0].appServicePlanId'
+      name = "HelloPy"
+      echo "$name"
+      repo_url = "https://github.com/Vedanttrivedi/HelloPy"
+      az webapp deployment source config --branch main --manual-integration --name $name --repo-url $repo_url --ids $ids
+  displayName : Push Azure
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      az webapp deployment source sync --ids $ids --name $name
+  displayName : Live Sync
+
