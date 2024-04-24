@@ -8,13 +8,6 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      az login
-  displayName : Azure Login
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
       #!/bin/bash
       ids=$(az webapp list --query '[0].id' -o tsv)
       name="HelloPy"
