@@ -4,35 +4,6 @@ trigger:
 pool: Default
 
 stages:
-- stage: Build
-  displayName: 'Build Stage'
-  jobs:
-  - job: BuildJob
-    displayName: 'Build Job'
-    steps:
-    - script: echo 'Downloading dependencies...'
-      displayName: 'Download Dependencies'
-
-    - script: echo 'Compiling source code...'
-      displayName: 'Compile Source Code'
-
-    - script: echo 'Packaging application...'
-      displayName: 'Package Application'
-
-- stage: Test
-  displayName: 'Test Stage'
-  jobs:
-  - job: TestJob
-    displayName: 'Test Job'
-    steps:
-    - script: echo 'Running unit tests...'
-      displayName: 'Run Unit Tests'
-
-    - script: echo 'Running integration tests...'
-      displayName: 'Run Integration Tests'
-
-    - script: echo 'Generating test coverage report...'
-      displayName: 'Generate Test Coverage Report'
 
 - stage: Deploy
   displayName: 'Deploy Stage'
