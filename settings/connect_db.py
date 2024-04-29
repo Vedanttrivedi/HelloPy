@@ -8,12 +8,9 @@ password = os.environ.get("DBPASSWORD")
 
 
 def connect():
-    print(f"details are {host} {dbname} {user} {password}")
     conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, password)
-    print(f"connection string {conn_string}")
     conn = psycopg2.connect(conn_string) 
     cursor = conn.cursor()
-    print("connected")
     return [conn,cursor]
 
 
