@@ -11,7 +11,7 @@ password = os.environ.get("DBPASSWORD")
 def connect():
     credential = DefaultAzureCredential(managed_identity_client_id=os.environ.get("ManagedIdentityClientId"))
     token = credential.get_token("https://ossrdbms-aad.database.windows.net/.default")
-    conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, token.token)
+    conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, password)
     conn = psycopg2.connect(conn_string) 
     cursor = conn.cursor()
     return [conn,cursor]
