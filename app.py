@@ -4,16 +4,18 @@ from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 import sys
 from settings import connect_db
-
+from azure.identity import ManagedIdentityCredential,DefaultAzureCredential
 app = Flask(__name__)
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'settings')))
 
 
+
 @app.route('/')
 def index():
    user_data = User.sendData()
-   return render_template('index.html',users=user_data)
+   
+   return render_template('index.html',users={})
 
 @app.route('/favicon.ico')
 def favicon():

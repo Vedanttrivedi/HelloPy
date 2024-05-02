@@ -1,5 +1,6 @@
 import psycopg2
 import os
+from azure.identity import ManagedIdentityCredential,DefaultAzureCredential
 
 host = os.environ.get("DBHOST")
 dbname = os.environ.get("DBNAME")
@@ -8,26 +9,23 @@ password = os.environ.get("DBPASSWORD")
 
 
 def connect():
-    conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, password)
+    credential = DefaultAzureCredential()
+    token = credential.get_token("https://ossrdbms-aad.database.windows.net/.default")
+    conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, token.token)
     conn = psycopg2.connect(conn_string) 
     cursor = conn.cursor()
     return [conn,cursor]
 
 
 def fetchData():
-    print("hhii")
-    print(os.environ.get("host"))
     connectors = connect()
     conn,cursor = connectors[0],connectors[1]
     postgreSQL_select_Query = "select * from users"
     cursor.execute(postgreSQL_select_Query)
-    print("Selecting rows from users table using cursor.fetchall")
     publisher_records = cursor.fetchall()
-    print(f"length of records are {len(publisher_records)}")
     users = []
     for row in publisher_records:
         ls = [row[1],row[2]]
-        print(f"name {ls}")
         users.append(ls)
     conn.close()
     cursor.close()
@@ -52,7 +50,6 @@ def createDB():
     conn.commit()
     cursor.close()
     conn.close()
-
 '''
 
 
@@ -65,7 +62,7 @@ cursor = conn.cursor()
 cursor.execute("DROP TABLE IF EXISTS inventory;")
 print("Finished dropping table (if existed)")
 
-cursor.execute("CREATE TABLE inventory (id serial PRIMARY KEY, name VARCHAR(50), quantity INTEGER);")
+cursor.execute("CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(50), email VARCHAR(50);")
 print("Finished creating table")
 
 cursor.execute("INSERT INTO inventory (name, quantity) VALUES (%s, %s);", ("banana", 150))
