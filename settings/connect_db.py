@@ -9,10 +9,10 @@ password = os.environ.get("DBPASSWORD")
 
 
 def connect():
-    credential = ManagedIdentityCredential(client_id=os.environ.get("AZURE_CLIENT_ID"))
-    token = credential.get_token("https://ossrdbms-aad.database.windows.net/.default")
-    print(f"generated token is {token}")
-    conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, token.token)
+    # credential = ManagedIdentityCredential(client_id=os.environ.get("AZURE_CLIENT_ID"))
+    # token = credential.get_token("https://ossrdbms-aad.database.windows.net/.default")
+    # print(f"generated token is {token}")
+    conn_string = "host={0} user={1} dbname={2} password={3}".format(host, user, dbname, password)
     conn = psycopg2.connect(conn_string) 
     cursor = conn.cursor()
     return [conn,cursor]
