@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'setting
 def index():
    #user_data = User.sendData()
    
-   return render_template('index.html',users=[])
+   return render_template('index.html',users={})
 
 @app.route('/favicon.ico')
 def favicon():
